@@ -5,7 +5,8 @@
 		"urls": {
 			"api": "http://localhost:3001/api/v9",
 			"gateway": "ws://localhost:3001",
-			"cdn": "http://localhost:3001"
+			"cdn": "http://localhost:3001",
+			"wellknown": "http://localhost:3001"
 		},
 		"url": "http://localhost:3001",
 		"display": true
