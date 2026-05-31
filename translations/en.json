@@ -402,7 +402,7 @@
 		"idpermissions": "This will allow the bot to:",
 		"instanceField": "Instance:",
 		"loaddesc": "This shouldn't take long",
-		"loadingText": "Fermi is loading",
+		"loadingText": "Backus Agency Chat",
 		"loginButton": "Login",
 		"noAccount": "Don't have an account?",
 		"pw2Field": "Enter password again:",
@@ -412,7 +412,7 @@
 		"transDesc": "You can help translate Fermi into your own language!",
 		"transTitle": "Translate Fermi",
 		"userField": "Username:",
-		"welcomeJank": "Welcome to Fermi"
+		"welcomeJank": "Backus Agency"
 	},
 	"incorrectURLS": "## This instance has likely sent the incorrect links.\n### If you're the instance owner please see [here](https://docs.spacebar.chat/setup/server/) under *Connecting from remote machines* to correct the issue.\n Would you like Fermi to automatically try to fix this error to let you connect to the instance?",
 	"instInfo": "Instance information",
