@@ -1,48 +1,48 @@
 [
   {
-    name: Backus Agency,
-    description: Backus Agency - Secure AI Chat Platform,
-    urls: {
-      api: https://discy.backus.agency/api/v9,
-      gateway: wss://discy.backus.agency/,
-      cdn: https://discy.backus.agency,
-      wellknown: https://discy.backus.agency
+    "name": "Backus Agency",
+    "description": "Backus Agency - Secure AI Chat Platform",
+    "urls": {
+      "api": "https://discy.backus.agency/api/v9",
+      "gateway": "wss://discy.backus.agency/",
+      "cdn": "https://discy.backus.agency",
+      "wellknown": "https://discy.backus.agency"
     },
-    url: https://discy.backus.agency,
-    display: true,
-    image: /logo.svg
+    "url": "https://discy.backus.agency",
+    "display": true,
+    "image": "/logo.svg"
   },
   {
-    name: Local Spacebar,
-    description: Self-hosted Spacebar instance for AI agents,
-    urls: {
-      api: http://localhost:3100/api/v9,
-      gateway: ws://localhost:3100,
-      cdn: http://localhost:3100,
-      wellknown: http://localhost:3100
+    "name": "Local Spacebar",
+    "description": "Self-hosted Spacebar instance for AI agents",
+    "urls": {
+      "api": "http://localhost:3100/api/v9",
+      "gateway": "ws://localhost:3100",
+      "cdn": "http://localhost:3100",
+      "wellknown": "http://localhost:3100"
     },
-    url: http://localhost:3100,
-    display: true
+    "url": "http://localhost:3100",
+    "display": true
   },
   {
-    name: Harmony,
-    description: The official Harmony community!,
-    image: https://codeberg.org/MelodyChat/landing-page/raw/commit/9d69a5de98123a95cba77556ccaf83ad71162d63/src/assets/harmony.webp,
-    url: https://api.harmony.melodychat.org/,
-    display: true
+    "name": "Harmony",
+    "description": "The official Harmony community!",
+    "image": "https://codeberg.org/MelodyChat/landing-page/raw/commit/9d69a5de98123a95cba77556ccaf83ad71162d63/src/assets/harmony.webp",
+    "url": "https://api.harmony.melodychat.org/",
+    "display": true
   },
   {
-    name: Harmony Staging,
-    description: A staging instance for Harmony,
-    image: https://codeberg.org/MelodyChat/landing-page/raw/commit/9d69a5de98123a95cba77556ccaf83ad71162d63/src/assets/harmony.webp,
-    url: https://stg-api.harmony.melodychat.org/,
-    display: false
+    "name": "Harmony Staging",
+    "description": "A staging instance for Harmony",
+    "image": "https://codeberg.org/MelodyChat/landing-page/raw/commit/9d69a5de98123a95cba77556ccaf83ad71162d63/src/assets/harmony.webp",
+    "url": "https://stg-api.harmony.melodychat.org/",
+    "display": false
   },
   {
-    name: Spacebar,
-    description: The official Spacebar instance.,
-    image: https://raw.githubusercontent.com/spacebarchat/spacebarchat/master/branding/png/Spacebar__Icon-Discord.png,
-    url: https://spacebar.chat,
-    display: false
+    "name": "Spacebar",
+    "description": "The official Spacebar instance.",
+    "image": "https://raw.githubusercontent.com/spacebarchat/spacebarchat/master/branding/png/Spacebar__Icon-Discord.png",
+    "url": "https://spacebar.chat",
+    "display": false
   }
 ]
