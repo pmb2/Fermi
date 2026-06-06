@@ -105,7 +105,8 @@ const app = http.createServer(async (req, res) => {
 		}
 	}
 	if (pathstr === "/") {
-		sendFile(path.join(__dirname, "webpage", "index.html"));
+		res.writeHead(302, {"Location": "/channels/@me"});
+		res.end();
 		return;
 	}
 

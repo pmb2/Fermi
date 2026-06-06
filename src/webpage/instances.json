@@ -1,7 +1,11 @@
 [
   {
     "name": "Backus Agency",
+<<<<<<< HEAD
     "description": "Self-hosted Spacebar - Backus Agency",
+=======
+    "description": "Backus Agency - Secure AI Chat Platform",
+>>>>>>> origin/main
     "urls": {
       "api": "https://discy.backus.agency/api/v9",
       "gateway": "wss://discy.backus.agency/",
@@ -9,7 +13,12 @@
       "wellknown": "https://discy.backus.agency"
     },
     "url": "https://discy.backus.agency",
+<<<<<<< HEAD
     "display": true
+=======
+    "display": true,
+    "image": "/logo.svg"
+>>>>>>> origin/main
   },
   {
     "name": "Local Spacebar",
