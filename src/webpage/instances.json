@@ -1,5 +1,17 @@
 [
   {
+    "name": "Backus Agency",
+    "description": "Self-hosted Spacebar - Backus Agency",
+    "urls": {
+      "api": "https://discy.backus.agency/api/v9",
+      "gateway": "wss://discy.backus.agency/",
+      "cdn": "https://discy.backus.agency",
+      "wellknown": "https://discy.backus.agency"
+    },
+    "url": "https://discy.backus.agency",
+    "display": true
+  },
+  {
     "name": "Local Spacebar",
     "description": "Self-hosted Spacebar instance for AI agents",
     "urls": {
