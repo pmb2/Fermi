@@ -2610,6 +2610,34 @@ span.instanceStatus {
 .messagediv:hover {
 	background: var(--primary-hover);
 }
+/* Selection checkbox */
+.msg-select-cb {
+	position: absolute;
+	left: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.15s;
+	z-index: 5;
+	accent-color: var(--accent);
+}
+.messagediv:hover .msg-select-cb,
+.messagediv.selected .msg-select-cb {
+	opacity: 1;
+}
+.messagediv.selected {
+	background: var(--background-message-selected, rgba(88,101,242,0.08)) !important;
+	border-left-color: var(--accent);
+}
+#msg-sel-all-bar {
+	background: var(--background-secondary);
+	position: sticky;
+	top: 0;
+	z-index: 50;
+}
 .fSpoil {
 	position: absolute;
 	top: 0;

@@ -26,8 +26,10 @@ import {Components} from "./interactions/compontents.js";
 import {ImagesDisplay} from "./disimg";
 import {ReportMenu} from "./reporting/report.js";
 import {getDeveloperSettings} from "./utils/storage/devSettings.js";
+
 class Message extends SnowFlake {
 	static contextmenu = new Contextmenu<Message, void>("message menu");
+	static selectedMessages = new Set<Message>();
 	stickers!: Sticker[];
 	owner: Channel;
 	headers: Localuser["headers"];
@@ -458,7 +460,9 @@ class Message extends SnowFlake {
 		}
 	}
 	canDelete() {
-		return this.channel.hasPermission("MANAGE_MESSAGES") || this.author === this.localuser.user;
+		return this.channel.hasPermission("MANAGE_MESSAGES")
+			|| this.author === this.localuser.user
+			|| this.localuser.rights.hasPermission("OPERATOR");
 	}
 	get channel() {
 		return this.owner;
@@ -536,6 +540,16 @@ class Message extends SnowFlake {
 		);
 		this.div = obj;
 		obj.classList.add("messagediv");
+	}
+	toggleSelect() {
+		if (Message.selectedMessages.has(this)) {
+			Message.selectedMessages.delete(this);
+			this.div?.classList.remove("selected");
+		} else {
+			Message.selectedMessages.add(this);
+			this.div?.classList.add("selected");
+		}
+		if (this.channel.updateSelectionBar) this.channel.updateSelectionBar();
 	}
 	deleteDiv() {
 		if (!this.div) return;
@@ -702,6 +716,21 @@ class Message extends SnowFlake {
 			div.classList.add("replying");
 		}
 		div.innerHTML = "";
+		// Selection checkbox
+		const selCb = document.createElement("input");
+		selCb.type = "checkbox";
+		selCb.classList.add("msg-select-cb");
+		selCb.title = "Select message";
+		selCb.onclick = (e) => {
+			e.stopPropagation();
+			this.toggleSelect();
+		};
+		if (Message.selectedMessages.has(this)) {
+			selCb.checked = true;
+			div.classList.add("selected");
+		}
+		div.prepend(selCb);
+
 		const build = document.createElement("div");
 
 		build.classList.add("flexltr", "message");

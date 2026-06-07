@@ -3159,6 +3159,28 @@ class Channel extends SnowFlake {
 		if (gid !== Channel.genid) {
 			return;
 		}
+		// Tag scroller with channel reference for selection bar
+		(div as any).__channel = this;
+		// Add select-all toggle bar above messages
+		const selAllBar = document.createElement("div");
+		selAllBar.id = "msg-sel-all-bar";
+		selAllBar.style.cssText = "display:flex;align-items:center;gap:8px;padding:6px 16px;border-bottom:1px solid var(--background-modifier-accent);font-size:13px";
+		const selAllCb = document.createElement("input");
+		selAllCb.type = "checkbox";
+		selAllCb.id = "msg-sel-all";
+		selAllCb.onchange = () => this.selectAll();
+		selAllCb.title = "Select all messages in view";
+		selAllBar.appendChild(selAllCb);
+		const selAllLabel = document.createElement("label");
+		selAllLabel.htmlFor = "msg-sel-all";
+		selAllLabel.textContent = "Select All";
+		selAllLabel.style.cursor = "pointer";
+		selAllBar.appendChild(selAllLabel);
+		if (div.parentElement?.id === "scrollWrap") {
+			div.parentElement.insertBefore(selAllBar, div);
+		} else {
+			div.before(selAllBar);
+		}
 		messages.append(div);
 		/*
 		await this.infinite.watchForChange().then(async (_) => {
@@ -3970,6 +3992,112 @@ class Channel extends SnowFlake {
 				type: this.localuser.userMap.get(id) ? 1 : 0,
 			}),
 		});
+	}
+	// Message multi-selection support
+	static selBar: HTMLDivElement | null = null;
+	static createSelectionBar() {
+		if (Channel.selBar) return Channel.selBar;
+		const bar = document.createElement("div");
+		bar.id = "msg-sel-bar";
+		bar.style.cssText = "display:none;position:sticky;bottom:0;left:0;right:0;padding:8px 16px;background:var(--background-secondary);border-top:2px solid var(--accent);align-items:center;gap:12px;z-index:100";
+		bar.classList.add("flexltr");
+		const count = document.createElement("span");
+		count.id = "msg-sel-count";
+		bar.appendChild(count);
+		const delBtn = document.createElement("button");
+		delBtn.textContent = "🗑 Delete Selected";
+		delBtn.style.cssText = "background:var(--danger);color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer";
+		delBtn.onclick = () => {
+			const channel = document.getElementById("scrollWrap")?.querySelector(".scroller")?.__channel;
+			if (channel && channel.bulkDeleteSelected) channel.bulkDeleteSelected();
+		};
+		bar.appendChild(delBtn);
+		const clearBtn = document.createElement("button");
+		clearBtn.textContent = "✕ Clear";
+		clearBtn.style.cssText = "background:transparent;color:var(--text-normal);border:none;padding:6px 14px;border-radius:4px;cursor:pointer";
+		clearBtn.onclick = () => Channel.clearSelection();
+		bar.appendChild(clearBtn);
+		return bar;
+	}
+	static clearSelection() {
+		for (const msg of Message.selectedMessages) {
+			msg.div?.classList.remove("selected");
+		}
+		Message.selectedMessages.clear();
+		const bar = document.getElementById("msg-sel-bar");
+		if (bar) bar.style.display = "none";
+		const selectAll = document.getElementById("msg-sel-all");
+		if (selectAll) (selectAll as HTMLInputElement).checked = false;
+	}
+	updateSelectionBar() {
+		const wrap = document.getElementById("scrollWrap");
+		if (!wrap) return;
+		let bar = document.getElementById("msg-sel-bar");
+		if (!bar) {
+			bar = Channel.createSelectionBar();
+			wrap.appendChild(bar);
+		}
+		const count = Message.selectedMessages.size;
+		if (count === 0) {
+			bar.style.display = "none";
+			const selectAll = document.getElementById("msg-sel-all");
+			if (selectAll) (selectAll as HTMLInputElement).checked = false;
+			return;
+		}
+		bar.style.display = "flex";
+		const countEl = document.getElementById("msg-sel-count");
+		if (countEl) countEl.textContent = `${count} message${count > 1 ? 's' : ''} selected`;
+	}
+	selectAll() {
+		const current = Message.selectedMessages.size;
+		// Toggle: if any are currently deselected, select all; else clear
+		let allSelected = true;
+		for (const msg of this.messages.values()) {
+			if (!Message.selectedMessages.has(msg)) {
+				allSelected = false;
+				break;
+			}
+		}
+		if (allSelected && current > 0) {
+			Channel.clearSelection();
+		} else {
+			for (const msg of this.messages.values()) {
+				if (!Message.selectedMessages.has(msg)) {
+					Message.selectedMessages.add(msg);
+					msg.div?.classList.add("selected");
+					msg.div?.querySelector(".msg-select-cb")?.setAttribute("checked", "checked");
+				}
+			}
+		}
+		this.updateSelectionBar();
+	}
+	bulkDeleteSelected() {
+		const selected = Array.from(Message.selectedMessages);
+		if (selected.length === 0) return;
+		const ids = selected.map(m => m.id).filter(id => id && !id.includes("fake"));
+		const confirmMsg = `Delete ${selected.length} message${selected.length > 1 ? 's' : ''}? This cannot be undone.`;
+		if (!confirm(confirmMsg)) return;
+		// Delete via API
+		Message.deleteBulk(this, ids);
+	}
+	static deleteBulk(channel: Channel, ids: string[]) {
+		if (ids.length === 1) {
+			fetch(`${channel.info.api}/channels/${channel.id}/messages/${ids[0]}`, {
+				method: "DELETE", headers: channel.headers
+			}).catch(console.error);
+		} else {
+			fetch(`${channel.info.api}/channels/${channel.id}/messages/bulk-delete`, {
+				method: "POST",
+				headers: {...channel.headers, "Content-Type": "application/json"},
+				body: JSON.stringify({messages: ids}),
+			}).catch(console.error);
+		}
+		// Immediately remove from DOM
+		for (const id of ids) {
+			const msg = channel.messages.get(id);
+			if (msg) msg.deleteEvent();
+		}
+		Channel.clearSelection();
 	}
 }
 Channel.setupcontextmenu();
