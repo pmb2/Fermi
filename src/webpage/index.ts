@@ -76,11 +76,17 @@ if (window.location.pathname.startsWith("/channels")) {
 		};
 	}
 	const loaddesc = document.getElementById("load-desc") as HTMLSpanElement;
-	try {
-		const current = sessionStorage.getItem("currentuser") || Localuser.users.currentuser;
-		if (!Localuser.users.users[current]) {
-			thisUser = new Localuser(await new Promise<Specialuser>((res) => makeLogin(true, "", res)));
-		} else {
+		try {
+			const current = sessionStorage.getItem("currentuser") || Localuser.users.currentuser;
+			if (!Localuser.users.users[current]) {
+				// No saved user — hide loading screen immediately, show solid login dialog
+				const loading = document.getElementById("loading") as HTMLDivElement;
+				if (loading) {
+					loading.classList.add("doneloading");
+					loading.classList.remove("loading");
+				}
+				thisUser = new Localuser(await new Promise<Specialuser>((res) => makeLogin(false, "", res)));
+			} else {
 			thisUser = new Localuser(Localuser.users.users[current]);
 		}
 
