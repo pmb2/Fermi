@@ -1,17 +1,38 @@
 {
-	"name": "Backus Agency",
-	"icons": [
-		{
-			"src": "/logo.webp",
-			"sizes": "512x512"
-		}
-	],
-	"start_url": "/app",
-	"display": "standalone",
-	"scope": "/",
-	"theme_color": "#05050a",
-	"categories":["social"],
-	"description": "A friendly chat platform for you and your friends!",
-	"background_color": "#05050a",
-	"offline_enabled": true
+  "name": "Backus Agency",
+  "short_name": "Backus",
+  "icons": [
+    {
+      "src": "/backus-icon-192.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/backus-icon-512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/backus-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/backus-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/channels/@me",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#6C3CE1",
+  "background_color": "#16191b",
+  "categories": [
+    "social",
+    "communication"
+  ],
+  "description": "Backus Agency - Secure AI Chat Platform"
 }
